@@ -1,3 +1,28 @@
+# Azure-SOC Homelab
+
+## Objective
+This project aimed to build a mini honeynet in Azure, gathering log data from different sources into a Log Analytics workspace. I then used Microsoft Sentinel to gather the data, create attack maps, initiate alerts, and generate incidents. I assessed security metrics within the vulnerable environment over 24 hours, implementing security measures to harden the environment and then reevaluating metrics over another 24 hours. 
+
+### Skills Learned
+ - Demonstrated competency in setting up a honeynet.
+ - Expanded knowledge of firewall configurations
+ - Acquired expertise in incident response protocols, effectively mitigating security breaches.
+ - Enhanced skills in system hardening techniques to fortify network infrastructure.
+ - Proficient in creating insightful dashboards for comprehensive security monitoring.
+ - Advanced understanding of vulnerability management practices to proactively safeguard against threats.
+
+### Tools Used
+- Microsoft Sentinel
+- 1 Linux and 2 Windows VM
+- Virtual Network (VNet)
+- Network Security Group (NSG)
+- Log Analytics Workspace
+- Microsoft Azure Key Vault
+- Microsoft Azure Storage Account
+
+## Project
+
+
 <!--
 # Building an Azure SOC + Honeynet (Live Traffic)
 ![Cloud Honeynet / SOC](https://i.imgur.com/ZWxe03e.jpg)
