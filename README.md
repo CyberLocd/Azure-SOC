@@ -1,4 +1,4 @@
-# Azure-SOC Honeynet
+# Azure-SOC Honeynet (Live traffic)
 
 ## Objective
 This project aimed to build a mini honeynet in Azure, gathering log data from different sources into a Log Analytics workspace. I then used Microsoft Sentinel to gather the data, create attack maps, initiate alerts, and generate incidents. I assessed security metrics within the vulnerable environment over 24 hours, implementing security measures to harden the environment and then reevaluating metrics over another 24 hours. 
@@ -21,6 +21,11 @@ This project aimed to build a mini honeynet in Azure, gathering log data from di
 - Microsoft Azure Storage Account
 
 ## Project
+### STEP 1: Creating a honeynet.
+I started this project by creating an Azure Account (Tenant) and a free subscription. Once I had done that I  created two virtual machines (VMs), one Windows (were I downloaded the SQL server)  and one Linux, then configured the Network Security Group (Layer 4 Firewall) to allow all traffic inbound. The built-in firewalls on the VMs were wide-open and all resources were deployed with public endpoints visible to the internet. 
+
+### STEP2: Observing the logs.
+In case no one found my vulnerable VMs, I created another Windows VM to act as the attacker. I purposefully used the wrong credentials to try and get into my other two VMs and the SQL server. On checking the logs, I realised  I shouldn't have worried much about not being discovered because after a few hours my VMs had been discovered and someone was attempting to log in. What I found fascinating about the Windows logs was that the attacker interchangeably used "ADMIN" or "ADMINISTRATOR" to try and log in.
 
 
 <!--
