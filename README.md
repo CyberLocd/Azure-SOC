@@ -19,23 +19,44 @@ This project aimed to build a mini honeynet in Azure, gathering log data from di
 - Log Analytics Workspace
 - Microsoft Azure Key Vault
 - Microsoft Azure Storage Account
+- Microsoft Entra ID
 
 ## Project
 ### STEP 1: Creating a honeynet.
 I started this project by creating an Azure Account (Tenant) and a free subscription. Once I had done that I  created two virtual machines (VMs), one Windows (were I downloaded the SQL server)  and one Linux, then configured the Network Security Group (Layer 4 Firewall) to allow all traffic inbound. The built-in firewalls on the VMs were wide-open and all resources were deployed with public endpoints visible to the internet. 
 
-### STEP2: Observing the logs.
+### STEP 2: Observing the logs.
 <p align="center">
     <img src="https://github.com/anesum1/Azure-SOC/assets/119237115/8a99d15f-3e4a-4998-8ff8-47beece34e93" alt="Attack-Diagram">
 </p>
 
 In case no one found my vulnerable VMs, I created another Windows VM to act as the attacker. I purposefully used the wrong credentials to try and get into my other two VMs and the SQL server. On checking the logs, I realised  I shouldn't have worried about not being discovered because after a few hours my VMs had been discovered and someone was attempting to log in. What I found fascinating about the Windows logs was that the attacker interchangeably used "ADMIN" or "ADMINISTRATOR" to try and log in.
 
+### STEP 3: Microsoft Entra ID
+Microsoft Entra ID is a cloud-based Identity and Access management service that stores user accounts and sets access permissions. It was helpful, for me, to experiment with user settings and permissions in Azure by logging in as different users and testing their permissions. To understand the different access permissions, I had to refer to the Azure AD hierarchy shown below:
+
+<p align="center">
+    <img src="https://github.com/anesum1/Azure-SOC/assets/119237115/33b2a691-aaea-44c4-a348-ed1c226b89d5" alt="Azure-Structure">
+</p>
+
+1.	**Tenant**- is a top-level organisational unit in Azure.
+2.	**Management Groups**- are used to organise subscriptions, and manage access, policy and 
+     compliance.
+3.	**Subscriptions**- are used to access and organise billing to separate costs 
+     for different departments.
+4.	**Resource Groups**- These are logical containers for resources in Azure.
+5.	**Resource(s)**- An individual resource within a resource group.
+
+After acquiring this information, I proceeded to set user permissions with these specific access rights:
+- **Tenant-level global reader:** Read-only access to entire Azure AD tenant.
+- **Subscription-level reader:** Read-only access to specific Azure subscriptions.
+- **Resource group-level contributor:** Manage resources within a specific resource group.
+
 
 <!--# Building an Azure SOC + Honeynet (Live Traffic)
 ![Cloud Honeynet / SOC](https://i.imgur.com/ZWxe03e.jpg)
 
-## Introduction
+## Introduction"After acquiring this information, I proceeded to configure user permissions by granting them specific access rights."
 
 In this project, I build a mini honeynet in Azure and ingest log sources from various resources into a Log Analytics workspace, which is then used by Microsoft Sentinel to build attack maps, trigger alerts, and create incidents. I measured some security metrics in the insecure environment for 24 hours, apply some security controls to harden the environment, measure metrics for another 24 hours, then show the results below. The metrics we will show are:
 
