@@ -1,6 +1,8 @@
 # Windows Security Event Log
 
-```// Failed Authentication (RDP, SMB)
+```
+
+// Failed Authentication (RDP, SMB)
 SecurityEvent
 | where EventID == 4625
 | where TimeGenerated > ago(15m)
@@ -43,11 +45,13 @@ Event
 Event
 | where EventLog == "Microsoft-Windows-Windows Firewall With Advanced Security/Firewall"
 | where EventID == 2003
+
 ```
 
 # Linux Syslog
 
 ```
+
 // Failed logon (ip address extract)
 let IpAddress_REGEX_PATTERN = @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b";
 Syslog
@@ -102,11 +106,13 @@ Syslog
 | where Facility == "authpriv" and SeverityLevel == "info"
 | where SyslogMessage contains "to group 'sudo'"
 | project TimeGenerated, HostIP, Computer, ProcessID, SyslogMessage
+
 ```
 
 # Azure Active Directory
 
 ```
+
 // View Mass AAD Auth Failures
 SigninLogs
 | where ResultDescription == "Invalid username or password or Invalid on-premise username or password."
@@ -155,6 +161,7 @@ AuditLogs
 # Azure Storage Account
 
 ```
+
 // Authorization Error
 StorageBlobLogs
 | where MetricResponseType endswith "Error"
@@ -176,16 +183,18 @@ StorageBlobLogs | where OperationName == "PutBlob"
 //Copying a bunch of blobs (in a short time period)
 StorageBlobLogs | where OperationName == "CopyBlob"
 | where TimeGenerated > ago(24h)
+
 ```
 
 # Azure Key Vault
 
 ```
+
 // List out Secrets
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.KEYVAULT"
 | where OperationName == "SecretList"
-```
+
 // Attempt to view passwords that don't exist
 AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.KEYVAULT"
@@ -229,13 +238,16 @@ AzureDiagnostics
 | where ResourceProvider == "MICROSOFT.KEYVAULT"
 | where OperationName == "SecretSet"
 | where id_s endswith CRITICAL_PASSWORD_NAME
+
 ```
 
 # Network Security Groups
 
 ```
+
 // Allowed inbound malicious flows
 AzureNetworkAnalytics_CL
 | where FlowType_s == "MaliciousFlow" and AllowedInFlows_d >= 1
 | project TimeGenerated, FlowType = FlowType_s, IpAddress = SrcIP_s, DestinationIpAddress = DestIP_s, DestinationPort = DestPort_d, Protocol = L7Protocol_s, NSGRuleMatched = NSGRules_s, InboundFlowCount = AllowedInFlows_d
+
 ```
