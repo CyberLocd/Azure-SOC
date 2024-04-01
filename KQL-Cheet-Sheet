@@ -1,5 +1,11 @@
 # Windows Security Event Log
 
+```python
+# Your Python code here
+print("Hello, world!")
+```
+
+
 ```
 
 // Failed Authentication (RDP, SMB)
