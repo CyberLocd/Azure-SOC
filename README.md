@@ -11,15 +11,16 @@ This project aimed to build a mini honeynet in Azure, gathering log data from di
  - Proficient in creating insightful dashboards for comprehensive security monitoring.
  - Advanced understanding of vulnerability management practices to proactively safeguard against threats.
 
-### Tools Used
-- Microsoft Sentinel
+### Services/Tools Used
 - 1 Linux and 2 Windows VM
 - Virtual Network (VNet)
 - Network Security Group (NSG)
+- Microsoft Entra ID
 - Log Analytics Workspace
+- Microsoft Sentinel
 - Microsoft Azure Key Vault
 - Microsoft Azure Storage Account
-- Microsoft Entra ID
+- Microsoft Defender for Cloud
 
 ## Project
 ### STEP 1: Creating a honeynet.
