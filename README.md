@@ -38,7 +38,7 @@ In case no one found my vulnerable VMs, I created another Windows VM to act as t
 Microsoft Entra ID is a cloud-based Identity and Access management service that stores user accounts and sets access permissions. It was helpful, for me, to experiment with user settings and permissions in Azure by logging in as different users and testing their permissions. To understand the different access permissions, I had to refer to the Azure AD hierarchy shown below:
 
 <p align="center">
-    <img src="https://github.com/anesum1/Azure-SOC/assets/119237115/33b2a691-aaea-44c4-a348-ed1c226b89d5" alt="Azure-Structure">
+    <img src="https://github.com/anesum1/Azure-SOC/assets/119237115/33b2a691-aaea-44c4-a348-ed1c226b89d5" width="250" height="300" alt="Azure-Structure">
 </p>
 
 1.	**Tenant**- is a top-level organisational unit in Azure.
