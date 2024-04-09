@@ -50,9 +50,16 @@ Microsoft Entra ID is a cloud-based Identity and Access management service that 
 5.	**Resource(s)**- An individual resource within a resource group.
 
 After acquiring this information, I proceeded to set user permissions with these specific access rights:
-- **Tenant-level global reader:** Read-only access to entire Azure AD tenant.
+- **Tenant-level global reader:** Read-only access to the entire Azure AD tenant.
 - **Subscription-level reader:** Read-only access to specific Azure subscriptions.
 - **Resource group-level contributor:** Manage resources within a specific resource group.
+
+### STEP 4- Log Analytics Workspace and Sentinel
+My next step was to create a Log Analytics Workspace, my log aggregator. I then created a GeoIP watchlist to help me later when creating maps in Sentinel.  After creating this, I set up Sentinel and connected it to my Log Analytics Workspace. I then enabled Microsoft Defender for Cloud for Log Analytics Workspace, Subscriptions and Continous Export in Environment Settings.
+
+### STEP 5- Generating Logs and KQL Queries
+Once everything was connected, I enabled log collection for my VMs, Network Security Groups, Entra ID logs, Azure Activity Logs, Key Vault, and storage account. I then simulated different scenarios to generate logs, such as creating and deleting resource groups, brute-force attacks, and changing NSG settings. When the logs started coming through, I played around with different KQL queries to familiarise myself with the KQL language and see what results would come through.
+
 
 
 <!--# Building an Azure SOC + Honeynet (Live Traffic)
