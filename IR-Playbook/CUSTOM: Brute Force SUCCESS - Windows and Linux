@@ -1,0 +1,18 @@
+Incident Description
+This incident involves observation of potential brute force attempts against a Windows VM.
+
+Initial Response Actions
+-Verify the authenticity of the alert or report.
+-Immediately isolate the machine and change the password of the affected user
+-Identify the origin of the attacks and determine if they are attacking or involved with anything else
+-Determine how and when the attack occurred
+-Are the NSGs not being locked down? If so, check other NSGs
+-Assess the potential impact of the incident.
+-What type of account was it? Permissions?
+
+Containment and Recovery
+-Lock down the NSG assigned to that VM/Subnet, either entirely, or to allow only necessary traffic
+-Reset the affected user’s password
+-Enable MFA
+
+Document Findings and Close out Incident
