@@ -32,7 +32,10 @@ This project aimed to build a mini honeynet in Azure, gathering log data from di
 I started this project by creating an Azure Account (Tenant) and a free subscription. Once I had done that, I created two virtual machines (VMs), one Windows (where I downloaded the SQL server) and one Linux, then configured the Network Security Group (Layer 4 Firewall) to allow all traffic inbound. The built-in firewalls on the VMs were wide-open, and all resources were deployed with public endpoints that were visible to the internet. 
 
 ### STEP 2: Observing the logs.
-In case no one found my vulnerable VMs, I created another Windows VM to act as the attacker. I purposefully used the wrong credentials to try and get into my other two VMs and the SQL server. On checking the logs, I realised I shouldn't have worried about not being discovered because my VMs had been discovered after a few hours, and someone was attempting to log in. What I found fascinating about the Windows logs was that the attacker interchangeably used "ADMIN" or "ADMINISTRATOR" to try and log in.
+In case no one found my vulnerable VMs, I created another Windows VM to act as the attacker. I purposefully used the wrong credentials to try and get into my other two VMs and the SQL server. On checking the logs, I realised I shouldn't have worried about not being discovered because my VMs had been discovered after a few hours, and someone was attempting to log in. 
+<p align="center">
+    <img src="https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/2e20821f-28ca-4f14-8371-31b6074d102f" alt="Attack-logs">
+</p>
 
 ### STEP 3: Microsoft Entra ID
 Microsoft Entra ID is a cloud-based Identity and Access management service that stores user accounts and sets access permissions. It was helpful for me to experiment with user settings and permissions in Azure by logging in as different users and testing their permissions. To understand the different access permissions, I had to refer to the Azure AD hierarchy shown below:
