@@ -12,9 +12,9 @@ This project aimed to build a mini honeynet in Azure, gathering log data from di
  - Demonstrated competency in setting up a honeynet.
  - Expanded knowledge of firewall configurations
  - Acquired expertise in incident response protocols, effectively mitigating security breaches.
- - Enhanced skills in system hardening techniques to fortify network infrastructure.
+ - Enhanced skills in system hardening techniques to fortify network infrastructure using NIST 800-53.
  - Proficient in creating insightful dashboards for comprehensive security monitoring.
- - Advanced understanding of vulnerability management practices to proactively safeguard against threats.
+ - Advanced understanding of vulnerability management practices to safeguard against threats proactively.
 
 ### Services/Tools Used
 - 1 Linux and 2 Windows VM
@@ -29,13 +29,13 @@ This project aimed to build a mini honeynet in Azure, gathering log data from di
 
 ## Project
 ### STEP 1: Creating a honeynet.
-I started this project by creating an Azure Account (Tenant) and a free subscription. Once I had done that I  created two virtual machines (VMs), one Windows (were I downloaded the SQL server)  and one Linux, then configured the Network Security Group (Layer 4 Firewall) to allow all traffic inbound. The built-in firewalls on the VMs were wide-open and all resources were deployed with public endpoints visible to the internet. 
+I started this project by creating an Azure Account (Tenant) and a free subscription. Once I had done that, I created two virtual machines (VMs), one Windows (where I downloaded the SQL server) and one Linux, then configured the Network Security Group (Layer 4 Firewall) to allow all traffic inbound. The built-in firewalls on the VMs were wide-open, and all resources were deployed with public endpoints that were visible to the internet. 
 
 ### STEP 2: Observing the logs.
-In case no one found my vulnerable VMs, I created another Windows VM to act as the attacker. I purposefully used the wrong credentials to try and get into my other two VMs and the SQL server. On checking the logs, I realised  I shouldn't have worried about not being discovered because after a few hours my VMs had been discovered and someone was attempting to log in. What I found fascinating about the Windows logs was that the attacker interchangeably used "ADMIN" or "ADMINISTRATOR" to try and log in.
+In case no one found my vulnerable VMs, I created another Windows VM to act as the attacker. I purposefully used the wrong credentials to try and get into my other two VMs and the SQL server. On checking the logs, I realised I shouldn't have worried about not being discovered because my VMs had been discovered after a few hours, and someone was attempting to log in. What I found fascinating about the Windows logs was that the attacker interchangeably used "ADMIN" or "ADMINISTRATOR" to try and log in.
 
 ### STEP 3: Microsoft Entra ID
-Microsoft Entra ID is a cloud-based Identity and Access management service that stores user accounts and sets access permissions. It was helpful, for me, to experiment with user settings and permissions in Azure by logging in as different users and testing their permissions. To understand the different access permissions, I had to refer to the Azure AD hierarchy shown below:
+Microsoft Entra ID is a cloud-based Identity and Access management service that stores user accounts and sets access permissions. It was helpful for me to experiment with user settings and permissions in Azure by logging in as different users and testing their permissions. To understand the different access permissions, I had to refer to the Azure AD hierarchy shown below:
 
 <p align="center">
     <img src="https://github.com/anesum1/Azure-SOC/assets/119237115/33b2a691-aaea-44c4-a348-ed1c226b89d5" width="250" height="300" alt="Azure-Structure">
@@ -60,81 +60,73 @@ My next step was to create a Log Analytics Workspace, my log aggregator. I then 
 ### STEP 5- Generating Logs and KQL Queries
 Once everything was connected, I enabled log collection for my VMs, Network Security Groups, Entra ID logs, Azure Activity Logs, Key Vault, and storage account. I then simulated different scenarios to generate logs, such as creating and deleting resource groups, brute-force attacks, and changing NSG settings. When the logs started coming through, I played around with different KQL queries to familiarise myself with the KQL language and see what results would come through.
 
+### STEP 6- Running an Insecure Environment for 24 hours
+After setting up everything in Azure, I then left the insecure VMs on for 24 hours to gather security metrics. The VMs had both their Network Security Groups and built-in firewalls wide open, and all other resources were deployed with public endpoints visible to the Internet. Therefore, Private Endpoints (PE) were not utilised. 
 
+#### Architecture BEFORE hardening: 
+<p align="center">
+    <img src="https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/7107b66e-3841-426e-8866-c3f86a0b8ab1" alt="Architecture-before-hardening">
+</p>
 
-<!--# Building an Azure SOC + Honeynet (Live Traffic)
-![Cloud Honeynet / SOC](https://i.imgur.com/ZWxe03e.jpg)
+After 24 hours these were the results I collected:
+| Metric                                                 | Count
+| -------------------------------------------------------| -----
+| Start time                                             | 09/04/24 18:20
+| Stop time                                              | 10/04/24 18:20
+| SecurityEvent (Windows VM)                             | 36 875
+| Syslog  (Linux VM)                                     | 2 286
+| SecurityAlert (Microsoft Defender for Cloud)           | 9
+| SecurityIncident (Sentinel)                            | 311
+| NSG inbound malicious flow allowed                     | 2 123
 
-## Introduction"After acquiring this information, I proceeded to configure user permissions by granting them specific access rights."
+Using the data collected, I created attack maps using map queries in Sentinel to show where the traffic was coming from.
+#### Attack Map for Windows VM
+![windows-rdp-auth-fail-map-24hrs-insecure](https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/d79940bf-2055-4ded-8ff3-a26ce41dc0dc)
 
-In this project, I build a mini honeynet in Azure and ingest log sources from various resources into a Log Analytics workspace, which is then used by Microsoft Sentinel to build attack maps, trigger alerts, and create incidents. I measured some security metrics in the insecure environment for 24 hours, apply some security controls to harden the environment, measure metrics for another 24 hours, then show the results below. The metrics we will show are:
+#### Attack Map for Linux VM
+![linux-ssh-auth-fail-map-24hrs](https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/381272a7-a1d2-47a5-a254-177394fd6e85)
 
-- SecurityEvent (Windows Event Logs)
-- Syslog (Linux Event Logs)
-- SecurityAlert (Log Analytics Alerts Triggered)
-- SecurityIncident (Incidents created by Sentinel)
-- AzureNetworkAnalytics_CL (Malicious Flows allowed into our honeynet)
+#### Attack Map for NSG
+![nsg-malicious-allowed-in-map-24hrs-insecure](https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/0426cf1d-96af-43d8-b557-7c42280b33c7)
 
-## Architecture Before Hardening / Security Controls
-![Architecture Diagram](https://i.imgur.com/aBDwnKb.jpg)
+#### Attack Map for SQL server
+![mssql-auth-fail-map-24hrs insecure](https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/7f013fc6-20b4-4d9b-9d44-050cbef87850)
 
-## Architecture After Hardening / Security Controls
-![Architecture Diagram](https://i.imgur.com/YQNa9Pp.jpg)
+#### Incident response
+Because of the custom rules I had set in Sentinel, I generated a lot of incidents during the 24-hour period of running the insecure environments. 
+![Screenshot 2024-04-10 064638](https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/56f075b0-98cc-46b9-8b80-0d732bfd45cc)
 
-The architecture of the mini honeynet in Azure consists of the following components:
+All the medium incidents were generated by live traffic. I had to generate the high incidents to see how they would appear in Sentinel. After that, I sat out to investigate the incidents and respond to them using a custom incident management playbook thanks to the help of ChatGPT. 
 
-- Virtual Network (VNet)
-- Network Security Group (NSG)
-- Virtual Machines (2 windows, 1 linux)
-- Log Analytics Workspace
-- Azure Key Vault
-- Azure Storage Account
-- Microsoft Sentinel
+### Step 7- Running a Secure Environment for 24 hours
+When it was time to gather data from a secure environment, I implemented the National Institute of Standards and Technology (NIST) 800-53 framework to ensure its security. I hardened the NSG by blocking all traffic except for my admin computer and all other resources were secured by their built-in firewalls (FW) and private endpoint (PE).
 
-For the "BEFORE" metrics, all resources were originally deployed, exposed to the internet. The Virtual Machines had both their Network Security Groups and built-in firewalls wide open, and all other resources are deployed with public endpoints visible to the Internet; aka, no use for Private Endpoints.
+#### Architecture AFTER hardening:
+<p align="center">
+    <img src="https://github.com/anesum1/Azure-SOC-Honeynet/assets/119237115/93cb9bc6-3727-4fcf-b08a-02f3c94b3451" alt="Architecture-after-hardening">
+</p>
 
-For the "AFTER" metrics, Network Security Groups were hardened by blocking ALL traffic with the exception of my admin workstation, and all other resources were protected by their built-in firewalls as well as Private Endpoint
+After 24 hours these were the results I collected:
+| Metric                                                 | Count
+| -------------------------------------------------------| -----
+| Start time                                             | 11/04/24 18:16
+| Stop time                                              | 12/04/24 18:16
+| SecurityEvent (Windows VM)                             | 14 399
+| Syslog  (Linux VM)                                     | 3
+| SecurityAlert (Microsoft Defender for Cloud)           | 0
+| SecurityIncident (Sentinel)                            | 0
+| NSG inbound malicious flow allowed                     | 0
 
-## Attack Maps Before Hardening / Security Controls
-![NSG Allowed Inbound Malicious Flows](https://i.imgur.com/1qvswSX.png)<br>
-![Linux Syslog Auth Failures](https://i.imgur.com/G1YgZt6.png)<br>
-![Windows RDP/SMB Auth Failures](https://i.imgur.com/ESr9Dlv.png)<br>
+I was unable to retrieve any maps because no malicious activity was detected within the 24-hour period after the hardening process. As a result, all map queries returned no results. Since no malicious activity was detected in the environment, Sentinel did not generate any incidents.
 
-## Metrics Before Hardening / Security Controls
-
-The following table shows the metrics we measured in our insecure environment for 24 hours:
-Start Time 2023-03-15 17:04:29
-Stop Time 2023-03-16 17:04:29
-
-| Metric                   | Count
-| ------------------------ | -----
-| SecurityEvent            | 19470
-| Syslog                   | 3028
-| SecurityAlert            | 10
-| SecurityIncident         | 348
-| AzureNetworkAnalytics_CL | 843
-
-## Attack Maps Before Hardening / Security Controls
-
-```All map queries actually returned no results due to no instances of malicious activity for the 24 hour period after hardening.```
-
-## Metrics After Hardening / Security Controls
-
-The following table shows the metrics we measured in our environment for another 24 hours, but after we have applied security controls:
-Start Time 2023-03-18 15:37
-Stop Time	2023-03-19 15:37
-
-| Metric                   | Count
-| ------------------------ | -----
-| SecurityEvent            | 8778
-| Syslog                   | 25
-| SecurityAlert            | 0
-| SecurityIncident         | 0
-| AzureNetworkAnalytics_CL | 0
+#### Results 
+| Metric                                                 | Change after security environment
+| -------------------------------------------------------| -----
+| SecurityEvent (Windows VM)                             | 60.95%
+| Syslog  (Linux VM)                                     | 99.87%
+| SecurityAlert (Microsoft Defender for Cloud)           | 100%
+| SecurityIncident (Sentinel)                            | 100%
+| NSG inbound malicious flow allowed                     | 100%
 
 ## Conclusion
-
-In this project, a mini honeynet was constructed in Microsoft Azure and log sources were integrated into a Log Analytics workspace. Microsoft Sentinel was employed to trigger alerts and create incidents based on the ingested logs. Additionally, metrics were measured in the insecure environment before security controls were applied, and then again after implementing security measures. It is noteworthy that the number of security events and incidents were drastically reduced after the security controls were applied, demonstrating their effectiveness.
-
-It is worth noting that if the resources within the network were heavily utilized by regular users, it is likely that more security events and alerts may have been generated within the 24-hour period following the implementation of the security controls.
--->
+I created a small honeynet in Microsoft Azure for a project and connected log sources to a Log Analytics workspace. The logs were monitored by Microsoft Sentinel, which detected alerts and generated incidents. The project also measured metrics in an insecure environment before implementing security measures and again after applying the security controls. It's important to note that after implementing the security measures, the number of security events and incidents decreased significantly, indicating their effectiveness. However, if regular users heavily used the network resources, more security events and alerts might have been generated within the 24-hour period following the implementation of the security controls.
