@@ -1,0 +1,18 @@
+Incident Description
+This incident involves observation of potential brute force success against Azure Active Directory
+
+Initial Response Actions
+-Verify the authenticity of the alert or report.
+-Immediately identify and Revoke Sessions/Access for affected user
+-Identify the origin of the attacker and determine if they are attacking or involved with anything else
+-Assess the potential impact of the incident.
+-What type of account was it?
+-What Roles did it have?
+-How long has it been since the breach went unattended?
+
+Containment and Recovery
+-Reset the affected user’s password and Roles if applicable
+-Enable MFA
+-Consider preventing any logins from outside the UK with Conditional Access
+
+Document Findings and Close out Incident
