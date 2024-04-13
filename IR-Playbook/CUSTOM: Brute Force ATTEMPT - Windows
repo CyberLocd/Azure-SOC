@@ -1,0 +1,14 @@
+Incident Description
+An attempted brute force attack has been detected on a Windows computer, indicating that unauthorized individuals are trying to gain access by repeatedly attempting various combinations of login credentials
+
+Initial Response Actions
+-Immediately notify the designated security team and relevant stakeholders about the attempted brute force attack on the Windows computer.
+-Temporarily lock out the affected user accounts or IP addresses to prevent further unauthorized access attempts.
+-Enhance logging and monitoring on the Windows computer to track the source and frequency of the brute force attempts.
+
+Containment and Recovery
+-Review and potentially strengthen the password policy for user accounts on the Windows computer to enforce stronger authentication measures.
+-Configure account lockout policies to automatically lock out user accounts after a certain number of failed login attempts, preventing further brute force attacks.
+-Utilize Windows Defender Advanced Threat Protection (ATP) to detect and respond to advanced threats, including brute force attacks, on the Windows computer.
+
+Document Findings and Close out Incident
