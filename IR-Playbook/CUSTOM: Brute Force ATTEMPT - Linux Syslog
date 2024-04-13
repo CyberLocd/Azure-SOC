@@ -1,0 +1,14 @@
+Incident Description
+An incident has been identified through Linux syslog indicating a brute force attempt on the system. This suggests that unauthorized individuals are trying to gain access by repeatedly attempting various combinations of login credentials.
+
+Initial Response Actions
+-Verify the authenticity of the alert or report.
+-Conduct an initial triage of the incident to determine the scope, severity, and potential impact of the brute force attempt on the Linux system.
+-Document all relevant details of the incident, including timestamps, affected user accounts, and any additional context provided by the syslog.
+
+Containment and Recovery
+-Immediately lock out the affected user accounts or IP addresses and block them from accessing the Linux system to prevent further unauthorized access attempts.
+-Utilize system logs and security tools to investigate the source and nature of the brute force attempt, identifying any patterns or indicators of compromise (IOCs) associated with the incident.
+-Implement remediation steps to mitigate the impact of the brute force attempt, such as strengthening password policies, implementing rate limiting, or deploying intrusion detection/prevention systems.
+
+Document Findings and Close out Incident
