@@ -1,0 +1,19 @@
+Incident Description
+The Entra ID system has experienced multiple brute force attempts, indicating unauthorized individuals trying to gain access by repeatedly attempting various combinations of usernames and passwords.
+
+Initial Response Actions
+-Verify the authenticity of the alert or report.
+-Immediately alert the designated security team and relevant stakeholders about the ongoing brute force attempts on the Entra ID system.
+-Temporarily lock out the affected user accounts to prevent further unauthorized access attempts.
+-Enhance logging and monitoring on the Entra ID system to track the source and extent of the brute force attack.
+-Inform Entra ID system users about the ongoing security incident and advise them to remain vigilant regarding their account security.
+-Communicate internally to relevant teams and users about the situation, urging them to be cautious and proactive regarding their account security.
+
+Containment and Recovery
+-Review and potentially strengthen the password policy for Entra ID accounts to enforce stronger authentication measures.
+-Implement MFA to add an extra layer of security, requiring users to provide multiple forms of verification for access.
+-Implement an automated account lockout mechanism that temporarily disables accounts after a certain number of failed login attempts.
+-Ensure that the Entra ID system is up to date with the latest security patches and updates to address any vulnerabilities that may have been exploited during the brute force attempts.
+-Conduct training sessions to educate Entra ID system users about the importance of using strong passwords and being vigilant against brute force attacks.
+
+Document Findings and Close out Incident
