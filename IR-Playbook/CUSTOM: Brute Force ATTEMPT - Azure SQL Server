@@ -1,0 +1,17 @@
+Incident Description
+A brute force attempt has been detected on the Azure SQL Server, indicating unauthorized individuals attempting to gain access by repeatedly trying various combinations of login credentials.
+
+Initial Response Actions
+-Verify the authenticity of the alert or report.
+-Conduct an initial triage of the incident to assess the severity and potential impact of the brute force attempt on the Azure SQL Server.
+-Document all relevant details of the incident, including timestamps, affected systems, and any additional context provided by Azure Sentinel.
+
+Containment and Recovery
+-Immediately lock out the affected user accounts or IP addresses and block them from accessing the Azure SQL Server to prevent further unauthorized access attempts.
+-Utilize Azure Sentinel's advanced analytics and threat hunting capabilities to investigate the source and nature of the brute force attempt, identifying any indicators of compromise (IOCs) or malicious activity.
+-Review and strengthen the password policy for Azure SQL Server accounts to enforce stronger authentication measures.
+-Configure IP restrictions to allow access only from trusted IP addresses, reducing the attack surface for brute force attempts.
+-Implement MFA for Azure SQL Server logins to add an extra layer of security.
+-Ensure that the Azure SQL Server is up to date with the latest security patches and updates to address any vulnerabilities that may have been exploited during the brute force attempt.
+
+Document Findings and Close out Incident
